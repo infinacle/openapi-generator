@@ -41,23 +41,77 @@ func NewRouter() *gin.Engine {
 	return router
 }
 
-// Index is the index handler.
-func Index(c *gin.Context) {
-	c.String(http.StatusOK, "Hello World!")
+{{#apiInfo}}{{#apis}}{{#operations}}{{#operation}}
+// {{operationId}}Api API handler for {{operationId}}
+type {{operationId}}Api struct {
+	{{#bodyParam}}body *{{dataType}}{{/bodyParam}}
+	{{#pathParams}}
+	{{paramName}} {{#isNullable}}*{{/isNullable}}{{dataType}}
+	{{/pathParams}}
 }
 
-var routes = Routes{
-	{
-		"Index",
-		http.MethodGet,
-		"{{{basePathWithoutHost}}}/",
-		Index,
-	},{{#apiInfo}}{{#apis}}{{#operations}}{{#operation}}
+// {{operationId}}Handler handler for {{operationId}} {{httpMethod}} {{{path}}}
+// implements the following in any files:
+// // Handle {{nickname}} - {{{summary}}} {{httpMethod}} {{{path}}}
+// func (a *{{operationId}}Api{}) Handle(c *gin.Context) {
+//     c.JSON(http.StatusOK, data)
+// }
+func {{operationId}}Handler (c *gin.Context) {
+	// API context
+	api := &{{operationId}}Api{}
 
+	// path params
+	{{#pathParams}}
+	{{#isString}}{{>partial_param_string}}{{/isString}}
+	{{/pathParams}}
+
+	// query params
+	{{#queryParams}}
+	{{#required}}
+
+	{{/required}}
+	{{^required}}
+
+	{{/required}}
+	{{/queryParams}}
+
+	{{#bodyParam}}
+	{{#required}}
+	// Body is required
+	api.body = &{{dataType}}{}
+	if err := c.ShouldBind(api.body); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": 400,
+			"message": err.Error(),
+		})
+		return
+	}
+	{{^isPrimitiveType}}
+	errs := api.body.Validates()
+	if errs.HasError() {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": 400,
+			"message": errs.Error(),
+		})
+		return
+	}
+	{{/isPrimitiveType}}
+	{{/required}}
+	{{^required}}
+	// Body is optional
+	{{/required}}
+	{{/bodyParam}}
+
+	api.Handle(c)
+}
+{{/operation}}{{/operations}}{{/apis}}{{/apiInfo}}
+
+var routes = Routes{
+	{{#apiInfo}}{{#apis}}{{#operations}}{{#operation}}
 	{
 		"{{operationId}}",
 		http.Method{{httpMethod}},
 		"{{{basePathWithoutHost}}}{{{path}}}",
-		{{operationId}},
+		{{operationId}}Handler,
 	},{{/operation}}{{/operations}}{{/apis}}{{/apiInfo}}
 }

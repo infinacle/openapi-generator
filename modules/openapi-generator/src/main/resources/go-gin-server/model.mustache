@@ -2,6 +2,11 @@
 package {{packageName}}
 {{#models}}{{#imports}}
 {{#-first}}import (
+	"fmt"
+	"gitlab.infinacle.com/infini/go-rest/v2/status"
+	"gitlab.infinacle.com/infini/go-rest/v2/pagination"
+	"gitlab.infinacle.com/infini-reward/go-model/v2/model"
+	"gitlab.infinacle.com/infini/go-mgdb/v2"
 {{/-first}}	"{{import}}"{{#-last}}
 )
 {{/-last}}{{/imports}}{{#model}}{{#isEnum}}{{#description}}// {{{classname}}} : {{{description}}}{{/description}}
@@ -17,8 +22,14 @@ const (
 ){{/isEnum}}{{^isEnum}}{{#description}}
 // {{classname}} - {{{description}}}{{/description}}
 type {{classname}} struct {
-{{#vars}}{{#description}}
-	// {{{description}}}{{/description}}
-	{{name}} {{#isNullable}}*{{/isNullable}}{{{dataType}}} `json:"{{baseName}}{{^required}},omitempty{{/required}}"{{#vendorExtensions.x-go-custom-tag}} {{{.}}}{{/vendorExtensions.x-go-custom-tag}}`
+{{#vars}}
+  {{>partial_model_field}}
 {{/vars}}
-}{{/isEnum}}{{/model}}{{/models}}
+}{{/isEnum}}
+
+{{>partial_model_validates}}
+
+{{>partial_model_query}}
+
+{{/model}}
+{{/models}}
