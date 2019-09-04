@@ -24,6 +24,7 @@ func (c *{{classname}}Collection) C() *mgdb.Collection {
 
 // Load a record from mongo
 func (c *{{classname}}Collection) Load (id interface{}) (m *{{classname}}, err error) {
+  m = &{{classname}}{}
 	err = c.C().FirstID(m, id).Error
 	return
 }
