@@ -1,0 +1,14 @@
+{{^vendorExtensions.x-go-ignore}}
+{{#vendorExtensions.x-go-mongo-id}}
+    // x-go-mongo-id: {{description}}
+    mgdb.Document `bson:",inline"`
+{{/vendorExtensions.x-go-mongo-id}}
+{{^vendorExtensions.x-go-mongo-id}}
+    // {{name}} {{description}}
+    {{#isFreeFormObject}}
+    {{name}} map[string]interface{} `json:"{{baseName}}{{^required}},omitempty{{/required}}"{{#vendorExtensions.x-go-custom-tag}} {{{.}}}{{/vendorExtensions.x-go-custom-tag}}`
+    {{/isFreeFormObject}}{{^isFreeFormObject}}
+    {{name}} {{#isNullable}}*{{/isNullable}}{{{dataType}}} `json:"{{baseName}}{{^required}},omitempty{{/required}}"{{#vendorExtensions.x-go-custom-tag}} {{{.}}}{{/vendorExtensions.x-go-custom-tag}}`
+    {{/isFreeFormObject}}
+{{/vendorExtensions.x-go-mongo-id}}
+{{/vendorExtensions.x-go-ignore}}
