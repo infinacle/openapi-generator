@@ -5,37 +5,25 @@ import (
   "flag"
 	"log"
 
-	// WARNING!
-	// Change this to a fully-qualified import path
-	// once you place this file into your project.
-	// For example,
-	//
-	//    sw "github.com/myname/myrepo/{{apiPath}}"
-	//
 	sw "./{{apiPath}}"
-
-  "gitlab.infinacle.com/infini-reward/go-model/v2/model"
 )
 
-func run() {
+func run(router *gin.Engine) {
 	port := flag.String("p", "8080", "port number")
 	host := flag.String("h", "0.0.0.0", "listening host")
 	flag.Parse()
-
-	router := sw.NewRouter()
 	log.Fatal(router.Run(*host + ":" + *port))
-}
-
-func configure() {
-	if err := model.Init(); err != nil {
-		log.Printf("Failed to initialize: %v", err)
-		panic(err)
-	}
 }
 
 func main() {
 	log.Printf("Server started")
 
-	configure()
-	run()
+	router := sw.NewRouter()
+
+	// configure the server.
+	if err := sw.Configure(router); err != nil {
+		return
+	}
+
+	run(router)
 }

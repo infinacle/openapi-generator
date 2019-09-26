@@ -45,6 +45,8 @@ public class GoInfiniServerCodegen extends GoGinServerCodegen {
          * The generator will use the resource stream to attempt to read the templates.
          */
         embeddedTemplateDir = templateDir = "go-infini-server";
+
+        // apiTemplateFiles.put("controller-api-impl.mustache", ".go");
     }
 
     /**
@@ -68,5 +70,13 @@ public class GoInfiniServerCodegen extends GoGinServerCodegen {
     public String getHelp() {
         return "Generates a Go server library with the gin framework using OpenAPI-Generator."
                 + "By default, it will also generate service classes.";
+    }
+
+    @Override
+    public void processOpts() {
+        super.processOpts();
+        supportingFiles.add(new SupportingFile("static.index.html", "api", "index.html"));
+        writeOptional(outputFolder, new SupportingFile("configure.mustache", apiPath, "configure.go"));
+        writeOptional(outputFolder, new SupportingFile("auth.mustache", apiPath, "auth.go"));
     }
 }

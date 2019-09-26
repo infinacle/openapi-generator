@@ -1,4 +1,13 @@
     api.{{paramName}} = c.Param("{{paramName}}")
+    {{#required}}
+    if api.{{paramName}} == "" {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": 400,
+			"message": "{{paramName}} is required",
+		})
+        return
+    }
+    {{/required}}
     {{#minLength}}
     if len(api.{{paramName}}) < {{minLength}} {
 		c.JSON(http.StatusBadRequest, gin.H{

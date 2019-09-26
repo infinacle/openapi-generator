@@ -47,7 +47,7 @@ func NewRouter() *gin.Engine {
 {{#authMethods}}
 {{#isBasicBearer}}
 // {{name}} authentication
-// func {{name}} (c *gin.Context) (*auth.Principal, error) {
+// func {{name}} (c *gin.Context) (*Principal, error) {
 //	bearer := c.GetHeader("Authorization")
 //
 //	encrypted, err := auth.NewEncryptedBearer(bearer)
@@ -57,10 +57,26 @@ func NewRouter() *gin.Engine {
 //
 //	return encrypted.ValidateRemote()
 //}
+
+func bearerAuthHandler (c *gin.Context) (*Principal, error) {
+	// BasicBearer
+	principal, err := {{name}}(c)
+	if err != nil {
+		// Not authorized
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"code": 401,
+			"message": err.Error(),
+		})
+		return nil, err
+	}
+	
+	return principal, err
+}
+
 {{/isBasicBearer}}
 
 {{#isApiKey}}
-// func {{name}} (c *gin.Context) (*auth.Principal, error) {
+// func {{name}} (c *gin.Context) (*Principal, error) {
 //	apiKey, err := auth.NewApiKey(c.GetHeader("X-API-KEY"))
 //	if err != nil {
 //		return nil, err
@@ -81,10 +97,13 @@ type {{operationId}}Api struct {
 	{{paramName}} {{#isNullable}}*{{/isNullable}}{{dataType}} // {{description}}
 	{{/pathParams}}
 	{{#authMethods}}
-	Principal *auth.Principal // Principal
-	{{#isBasicBearer}}{{/isBasicBearer}}
+	Principal *Principal // Principal
+	{{#isBasicBearer}}
+	{{/isBasicBearer}}
 	{{/authMethods}}
 }
+
+
 
 // {{operationId}}Handler handler for {{operationId}} {{httpMethod}} {{{path}}}
 // implements the following in any files:
@@ -94,20 +113,18 @@ type {{operationId}}Api struct {
 // }
 func {{operationId}}Handler (c *gin.Context) {
 
+	var err error
+
 	// API context
 	api := &{{operationId}}Api{}
 
 	{{#authMethods}}
 	{{#isBasicBearer}}
-	principal, err := {{name}}(c)
+	// BasicBearer
+	api.Principal, err = bearerAuthHandler(c)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"code": 401,
-			"message": err.Error(),
-		})
 		return
 	}
-	api.Principal = principal
 	{{/isBasicBearer}}
 
 	{{#isApiKey}}
@@ -121,7 +138,6 @@ func {{operationId}}Handler (c *gin.Context) {
 	}
 	api.Principal = principal
 	{{/isApiKey}}
-
 	{{/authMethods}}
 
 	// path params
@@ -166,6 +182,7 @@ func {{operationId}}Handler (c *gin.Context) {
 	{{/required}}
 	{{/bodyParam}}
 
+	// Handle the request
 	api.Handle(c)
 }
 {{/operation}}{{/operations}}{{/apis}}{{/apiInfo}}
