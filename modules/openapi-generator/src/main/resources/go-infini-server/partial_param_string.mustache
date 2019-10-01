@@ -1,4 +1,15 @@
-    api.{{paramName}} = c.Param("{{paramName}}")
+    {{#isQueryParam}}
+    api.{{paramName}} = c.Query("{{baseName}}")
+    {{/isQueryParam}}
+    {{^isQueryParam}}
+    api.{{paramName}} = c.Param("{{baseName}}")
+    {{/isQueryParam}}
+    {{#defaultValue}}
+    if api.{{paramName}} == "" {
+        // use provided default value
+        api.{{paramName}} = "{{defaultValue}}"
+    }
+    {{/defaultValue}}
     {{#required}}
     if api.{{paramName}} == "" {
 		c.JSON(http.StatusBadRequest, gin.H{

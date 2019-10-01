@@ -13,3 +13,18 @@
         errs.Append(fmt.Errorf("{{name}} exceed maximum length {{maxLength}}"))
     }
 {{/maxLength}}
+{{#isEnum}}
+    // {{name}} isEnum
+    {
+        isAllowedValue := false
+        for _, val := range []string { {{#allowableValues}}{{#enumVars}}"{{value}}",{{/enumVars}}{{/allowableValues}} } {
+            if val == m.{{name}} {
+                isAllowedValue = true
+                break
+            }
+        }
+
+        if !isAllowedValue {
+            errs.Append(fmt.Errorf("{{name}} value not allowed: %s", m.{{name}}))
+        }
+    }{{/isEnum}}

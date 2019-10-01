@@ -5,6 +5,6 @@ import "github.com/gin-gonic/gin"
 
 // Configure the server
 func Configure (router *gin.Engine) error {
-    router.Static("/{{{basePathWithoutHost}}}/help", "./api")
+    router.Static("{{{basePathWithoutHost}}}/help", "./api")
     return nil
 }

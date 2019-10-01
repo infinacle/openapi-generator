@@ -19,7 +19,7 @@ func init () {
 
 // C collection for {{classname}}
 func (c *{{classname}}Collection) C() *mgdb.Collection {
-	return model.Client.Collection(c.Name)
+	return mongodb.Client.Collection(c.Name)
 }
 
 // Load a record from mongo
@@ -70,6 +70,16 @@ func (c *{{classname}}Collection) List(criteria map[string]interface{}, sort []s
 }
 
 // ~ DAO for model -------------------------------------------------------------
+
+QueryResult{
+		Error: err,
+		ID:    r.InsertedID,
+	}
+
+// Insert the model
+func (m *{{name}}) Insert() error {
+	return {{classname}}DAO.C().Insert(m).Error
+}
 
 // Update the model
 func (m *{{name}}) Update() error {

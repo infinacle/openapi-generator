@@ -81,7 +81,6 @@ func bearerAuthHandler (c *gin.Context) (*Principal, error) {
 //	if err != nil {
 //		return nil, err
 //	}
-	// x-validate-local: {{vendorExtensions}}
 //	{{^vendorExtensions.x-validate-local}}return apiKey.ValidateRemote(){{/vendorExtensions.x-validate-local}}
 //	{{#vendorExtensions.x-validate-local}}return apiKey.Validate(){{/vendorExtensions.x-validate-local}}
 //}
@@ -92,10 +91,17 @@ func bearerAuthHandler (c *gin.Context) (*Principal, error) {
 {{#apiInfo}}{{#apis}}{{#operations}}{{#operation}}
 // {{operationId}}Api API handler for {{operationId}}
 type {{operationId}}Api struct {
-	{{#bodyParam}}body *{{dataType}}{{/bodyParam}}
-	{{#pathParams}} 
-	{{paramName}} {{#isNullable}}*{{/isNullable}}{{dataType}} // {{description}}
+	{{#bodyParam}}
+	// Body Params
+	body *{{dataType}}{{/bodyParam}}
+	{{#pathParams}}
+	// Path Params 
+	{{paramName}} {{#isNullable}}*{{/isNullable}}{{dataType}} {{#description}}// {{{description}}} {{/description}}
 	{{/pathParams}}
+	{{#queryParams}}
+	// Query Params
+	{{paramName}} {{#isNullable}}*{{/isNullable}}{{dataType}} {{#description}}// {{{description}}} {{/description}}
+	{{/queryParams}}
 	{{#authMethods}}
 	Principal *Principal // Principal
 	{{#isBasicBearer}}
@@ -103,13 +109,11 @@ type {{operationId}}Api struct {
 	{{/authMethods}}
 }
 
-
-
 // {{operationId}}Handler handler for {{operationId}} {{httpMethod}} {{{path}}}
 // implements the following in any files:
 // // Handle {{nickname}} - {{{summary}}} {{httpMethod}} {{{path}}}
-// func (a *{{operationId}}Api) Handle(c *gin.Context) {
-//     c.JSON(http.StatusOK, data)
+// func (a *{{operationId}}Api) Handle(c *gin.Context) (int, interface{}) {
+//     return http.StatusOK, gin.H{}
 // }
 func {{operationId}}Handler (c *gin.Context) {
 
@@ -147,6 +151,7 @@ func {{operationId}}Handler (c *gin.Context) {
 
 	// query params
 	{{#queryParams}}
+	{{#isString}}{{>partial_param_string}}{{/isString}}
 	{{#required}}
 
 	{{/required}}
@@ -183,7 +188,8 @@ func {{operationId}}Handler (c *gin.Context) {
 	{{/bodyParam}}
 
 	// Handle the request
-	api.Handle(c)
+	status, resp  := api.Handle(c)
+	c.JSON(status, resp)
 }
 {{/operation}}{{/operations}}{{/apis}}{{/apiInfo}}
 
