@@ -109,12 +109,9 @@ type {{operationId}}Api struct {
 	{{/authMethods}}
 }
 
-// {{operationId}}Handler handler for {{operationId}} {{httpMethod}} {{{path}}}
-// implements the following in any files:
-// // Handle {{nickname}} - {{{summary}}} {{httpMethod}} {{{path}}}
-// func (a *{{operationId}}Api) Handle(c *gin.Context) (int, interface{}) {
-//     return http.StatusOK, gin.H{}
-// }
+// {{operationId}}Handler for {{operationId}} {{httpMethod}} {{{path}}} {{#description}}
+// {{{description}}}{{/description}}
+//go:generate go-codegen restapi-handler -name {{operationId}} -method {{httpMethod}} -path {{{path}}} {{#description}}-desc "{{{description}}}"{{/description}}
 func {{operationId}}Handler (c *gin.Context) {
 
 	var err error
@@ -188,8 +185,7 @@ func {{operationId}}Handler (c *gin.Context) {
 	{{/bodyParam}}
 
 	// Handle the request
-	status, resp  := api.Handle(c)
-	c.JSON(status, resp)
+	c.JSON(api.Handle(c))
 }
 {{/operation}}{{/operations}}{{/apis}}{{/apiInfo}}
 
