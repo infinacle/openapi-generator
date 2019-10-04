@@ -71,11 +71,6 @@ func (c *{{classname}}Collection) List(criteria map[string]interface{}, sort []s
 
 // ~ DAO for model -------------------------------------------------------------
 
-QueryResult{
-		Error: err,
-		ID:    r.InsertedID,
-	}
-
 // Insert the model
 func (m *{{name}}) Insert() error {
 	return {{classname}}DAO.C().Insert(m).Error
