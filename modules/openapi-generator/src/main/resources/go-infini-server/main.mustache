@@ -20,10 +20,5 @@ func main() {
 
 	router := sw.NewRouter()
 
-	// configure the server.
-	if err := sw.Configure(router); err != nil {
-		return
-	}
-
 	run(router)
 }

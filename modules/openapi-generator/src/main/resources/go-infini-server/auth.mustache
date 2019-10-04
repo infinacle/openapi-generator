@@ -1,12 +1,7 @@
 {{>partial_header}}
 package {{packageName}}
 
-{{#operations}}
-import (
-	"net/http"
-
-	"github.com/gin-gonic/gin"
-){{#operation}}
+import "github.com/gin-gonic/gin"
 
 {{#authMethods}}
 {{#isBasicBearer}}
@@ -24,6 +19,3 @@ func {{name}} (c *gin.Context) (*Principal, error) {
 {{/isApiKey}}
 
 {{/authMethods}}
-
-{{/operation}}
-{{/operations}}

@@ -28,6 +28,12 @@ type Routes []Route
 // NewRouter returns a new router.
 func NewRouter() *gin.Engine {
 	router := gin.Default()
+
+	// configure the server.
+	if err := Configure(router); err != nil {
+		panic(err)
+	}
+
 	for _, route := range routes {
 		switch route.Method {
 		case http.MethodGet:
@@ -113,33 +119,31 @@ type {{operationId}}Api struct {
 // {{{description}}}{{/description}}
 //go:generate go-codegen restapi-handler -name {{operationId}} -method {{httpMethod}} -path {{{path}}} {{#description}}-desc "{{{description}}}"{{/description}}
 func {{operationId}}Handler (c *gin.Context) {
-
-	var err error
-
 	// API context
 	api := &{{operationId}}Api{}
 
-	{{#authMethods}}
-	{{#isBasicBearer}}
+	{{#authMethods}}{{#isBasicBearer}}
 	// BasicBearer
-	api.Principal, err = bearerAuthHandler(c)
-	if err != nil {
-		return
+	{
+		var err error
+		api.Principal, err = bearerAuthHandler(c)
+		if err != nil {
+			return
+		}
 	}
-	{{/isBasicBearer}}
-
-	{{#isApiKey}}
-	principal, err := {{name}}(c)
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"code": 401,
-			"message": err.Error(),
-		})
-		return
+	{{/isBasicBearer}}{{#isApiKey}}
+	{
+		var err error
+		api.Principal, err = {{name}}(c)
+		if err != nil {
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"code": 401,
+				"message": err.Error(),
+			})
+			return
+		}
 	}
-	api.Principal = principal
-	{{/isApiKey}}
-	{{/authMethods}}
+	{{/isApiKey}}{{/authMethods}}
 
 	// path params
 	{{#pathParams}}
@@ -157,16 +161,17 @@ func {{operationId}}Handler (c *gin.Context) {
 	{{/required}}
 	{{/queryParams}}
 
-	{{#bodyParam}}
-	{{#required}}
+	{{#bodyParam}}{{#required}}
 	// Body is required
-	api.body = &{{dataType}}{}
-	if err := c.ShouldBind(api.body); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"code": 400,
-			"message": err.Error(),
-		})
-		return
+	{
+		api.body = &{{dataType}}{}
+		if err := c.ShouldBind(api.body); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"code": 400,
+				"message": err.Error(),
+			})
+			return
+		}
 	}
 	{{^isPrimitiveType}}
 	errs := api.body.Validates()
@@ -177,12 +182,28 @@ func {{operationId}}Handler (c *gin.Context) {
 		})
 		return
 	}
-	{{/isPrimitiveType}}
-	{{/required}}
-	{{^required}}
+	{{/isPrimitiveType}}{{/required}}{{^required}}
 	// Body is optional
-	{{/required}}
-	{{/bodyParam}}
+	{
+		api.body = &{{dataType}}{}
+		if err := c.ShouldBind(api.body); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"code": 400,
+				"message": err.Error(),
+			})
+			return
+		}
+	}
+	{{^isPrimitiveType}}
+	errs := api.body.Validates()
+	if errs.HasError() {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": 400,
+			"message": errs.Error(),
+		})
+		return
+	}
+	{{/isPrimitiveType}}{{/required}}{{/bodyParam}}
 
 	// Handle the request
 	c.JSON(api.Handle(c))
