@@ -9,8 +9,8 @@ import (
 ){{#operation}}
 
 // Handle {{nickname}} - {{{summary}}} {{httpMethod}} {{{path}}}
-func (a *{{operationId}}Api) Handle(c *gin.Context) (int, interface{}) {
-	return http.StatusOK, gin.H{}
-}
+// func (a *{{operationId}}Api) Handle(c *gin.Context) (int, interface{}) {
+// 	return http.StatusOK, gin.H{}
+// }
 
 {{/operation}}{{/operations}}
