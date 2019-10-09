@@ -2,19 +2,11 @@
 package main
 
 import (
-  "flag"
+	"flag"
 	"log"
 
-	// WARNING!
-	// Change this to a fully-qualified import path
-	// once you place this file into your project.
-	// For example,
-	//
-	//    sw "github.com/myname/myrepo/{{apiPath}}"
-	//
 	sw "./{{apiPath}}"
-
-  "gitlab.infinacle.com/infini-reward/go-model/v2/model"
+	"github.com/gin-gonic/gin"
 )
 
 func run() {
