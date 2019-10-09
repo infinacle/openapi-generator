@@ -7,7 +7,6 @@ import (
 	"strings"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"gitlab.infinacle.com/infini-reward/go-model/v2/auth"
 )
 
 // Route is the information for every URI.
@@ -98,16 +97,26 @@ func bearerAuthHandler (c *gin.Context) (*Principal, error) {
 // {{operationId}}Api API handler for {{operationId}}
 type {{operationId}}Api struct {
 	{{#bodyParam}}
-	// Body Params
+	// Body params
 	body *{{dataType}}{{/bodyParam}}
 	{{#pathParams}}
-	// Path Params 
+	// Path params 
 	{{paramName}} {{#isNullable}}*{{/isNullable}}{{dataType}} {{#description}}// {{{description}}} {{/description}}
 	{{/pathParams}}
 	{{#queryParams}}
-	// Query Params
+	// Query params
 	{{paramName}} {{#isNullable}}*{{/isNullable}}{{dataType}} {{#description}}// {{{description}}} {{/description}}
 	{{/queryParams}}
+
+	// Form params
+	{{#formParams}}
+    {{#isBinary}}
+    {{paramName}} *multipart.FileHeader `form:"{{baseName}}"{{#required}} binding:"required"{{/required}}`
+    {{/isBinary}}
+    {{^isBinary}}
+	{{paramName}} {{#isNullable}}*{{/isNullable}}{{dataType}} {{#description}}// {{{description}}} {{/description}}
+	{{/isBinary}}
+	{{/formParams}}
 	{{#authMethods}}
 	Principal *Principal // Principal
 	{{#isBasicBearer}}
@@ -145,13 +154,13 @@ func {{operationId}}Handler (c *gin.Context) {
 	}
 	{{/isApiKey}}{{/authMethods}}
 
-	// path params
 	{{#pathParams}}
+	// path params
 	{{#isString}}{{>partial_param_string}}{{/isString}}
 	{{/pathParams}}
 
-	// query params
 	{{#queryParams}}
+	// query params
 	{{#isString}}{{>partial_param_string}}{{/isString}}
 	{{#required}}
 
@@ -160,6 +169,11 @@ func {{operationId}}Handler (c *gin.Context) {
 
 	{{/required}}
 	{{/queryParams}}
+
+	{{#formParams}}
+	{{#isString}}{{>partial_param_string}}{{/isString}}
+	{{#isBinary}}{{>partial_param_binary}}{{/isBinary}}
+	{{/formParams}}
 
 	{{#bodyParam}}{{#required}}
 	// Body is required

@@ -2,7 +2,12 @@
     api.{{paramName}} = c.Query("{{baseName}}")
     {{/isQueryParam}}
     {{^isQueryParam}}
+    {{#isFormParam}}
+    api.{{paramName}} = c.PostForm("{{baseName}}")
+    {{/isFormParam}}
+    {{^isFormParam}}
     api.{{paramName}} = c.Param("{{baseName}}")
+    {{/isFormParam}}
     {{/isQueryParam}}
     {{#defaultValue}}
     if api.{{paramName}} == "" {
@@ -32,7 +37,7 @@
     if len(api.{{paramName}}) > {{maxLength}} {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"code": 400,
-			"message": "{{paramName}} should have maximum length of {{minLength}}",
+			"message": "{{paramName}} should have maximum length of {{maxLength}}",
 		})
         return
     }

@@ -8,7 +8,12 @@
     {{#isFreeFormObject}}
     {{name}} map[string]interface{} `json:"{{baseName}}{{^required}},omitempty{{/required}}"{{#vendorExtensions.x-go-custom-tag}} {{{.}}}{{/vendorExtensions.x-go-custom-tag}}`
     {{/isFreeFormObject}}{{^isFreeFormObject}}
+    {{#isBinary}}
+    {{name}} *multipart.FileHeader `form:"{{baseName}}"{{#required}} binding:"required"{{/required}}`
+    {{/isBinary}}
+    {{^isBinary}}
     {{name}} {{#isNullable}}*{{/isNullable}}{{{dataType}}} `json:"{{baseName}}{{^required}},omitempty{{/required}}"{{#vendorExtensions.x-go-custom-tag}} {{{.}}}{{/vendorExtensions.x-go-custom-tag}}`
+    {{/isBinary}}
     {{/isFreeFormObject}}
 {{/vendorExtensions.x-go-mongo-id}}
 {{/vendorExtensions.x-go-ignore}}
