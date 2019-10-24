@@ -1,0 +1,6 @@
+{{#vars}}{{^vendorExtensions.x-go-mongo-id}}
+// Get{{name}} get {{name}}
+func (m *{{classname}}) Get{{name}} () {{#isFreeFormObject}}map[string]interface{}{{/isFreeFormObject}}{{^isFreeFormObject}}{{#isBinary}}*multipart.FileHeader{{/isBinary}}{{^isBinary}}{{#isNullable}}*{{/isNullable}}{{{dataType}}}{{/isBinary}}{{/isFreeFormObject}}{
+    return m.{{name}}
+}
+{{/vendorExtensions.x-go-mongo-id}}{{/vars}}

@@ -16,6 +16,7 @@
     }
     {{/defaultValue}}
     {{#required}}
+    // {{paramName}} is require
     if api.{{paramName}} == "" {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"code": 400,
@@ -23,7 +24,6 @@
 		})
         return
     }
-    {{/required}}
     {{#minLength}}
     if len(api.{{paramName}}) < {{minLength}} {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -42,3 +42,27 @@
         return
     }
     {{/maxLength}}
+    {{/required}}
+    {{^required}}
+    {{#minLength}}
+    // {{paramName}} is not required, minLength {{minLength}}
+    if api.{{paramName}} != "" && len(api.{{paramName}}) < {{minLength}} {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": 400,
+			"message": "{{paramName}} should have minimum length of {{minLength}}",
+		})
+        return
+    }
+    {{/minLength}}
+    {{#maxLength}}
+    // {{paramName}} is not required, maxLength {{maxLength}}
+    if api.{{paramName}} != "" && len(api.{{paramName}}) > {{maxLength}} {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": 400,
+			"message": "{{paramName}} should have maximum length of {{maxLength}}",
+		})
+        return
+    }
+    {{/maxLength}}
+    {{/required}}
+
