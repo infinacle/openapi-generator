@@ -84,6 +84,7 @@ OpenAPI Generator allows generation of API client libraries (SDK generation), se
     - [3.2 - Workflow Integration](#32---workflow-integration-maven-gradle-github-cicd)
     - [3.3 - Online Generators](#33---online-openapi-generator)
     - [3.4 - License Information on Generated Code](#34---license-information-on-generated-code)
+    - [3.5 - IDE Integration](#35---ide-integration)
   - [4 - Companies/Projects using OpenAPI Generator](#4---companiesprojects-using-openapi-generator)
   - [5 - Presentations/Videos/Tutorials/Books](#5---presentationsvideostutorialsbooks)
   - [6 - About Us](#6---about-us)
@@ -537,48 +538,73 @@ The OpenAPI Generator project is intended as a benefit for users of the Open API
 * Generated code is intentionally _not_ subject to the parent project license
 
 When code is generated from this project, it shall be considered **AS IS** and owned by the user of the software.  There are no warranties--expressed or implied--for generated code.  You can do what you wish with it, and once generated, the code is your responsibility and subject to the licensing terms that you deem appropriate.
+
+### [3.5 - IDE Integration](#table-of-contents)
+
+Here is a list of community-conitributed IDE plug-ins that integrate with OpenAPI Generator:
+
+- Eclipse: [Codewind OpenAPI Tools for Eclipse](https://www.eclipse.org/codewind/open-api-tools-for-eclipse.html) by [IBM](https://www.ibm.com)
+- IntelliJ IDEA: [OpenAPI Generator](https://plugins.jetbrains.com/plugin/8433-openapi-generator) by [Jim Schubert](https://jimschubert.us/#/)
+- IntelliJ IDEA: [Senya Editor](https://plugins.jetbrains.com/plugin/10690-senya-editor) by [senya.io](https://senya.io)
+- [RepreZen API Studio](https://www.reprezen.com/)
+- Visual Studio: [REST API Client Code Generator](https://marketplace.visualstudio.com/items?itemName=ChristianResmaHelle.ApiClientCodeGenerator) by [Christian Resma Helle](https://christian-helle.blogspot.com/)
+- Visual Studio Code: [Codewind OpenAPI Tools](https://marketplace.visualstudio.com/items?itemName=IBM.codewind-openapi-tools) by [IBM](https://marketplace.visualstudio.com/publishers/IBM)
+
  
 ## [4 - Companies/Projects using OpenAPI Generator](#table-of-contents)
 Here are some companies/projects (alphabetical order) using OpenAPI Generator in production. To add your company/project to the list, please visit [README.md](README.md) and click on the icon to edit the page.
 
 - [Adaptant Solutions AG](https://www.adaptant.io/)
 - [Angular.Schule](https://angular.schule/)
+- [Australia and New Zealand Banking Group (ANZ)](http://www.anz.com/)
 - [ASKUL](https://www.askul.co.jp)
 - [b<>com](https://b-com.com/en)
+- [Banzai Cloud](https://banzaicloud.com)
 - [BIMData.io](https://bimdata.io)
 - [Bithost GmbH](https://www.bithost.ch)
 - [Boxever](https://www.boxever.com/)
+- [California State University, Northridge](https://www.csun.edu)
 - [CAM](https://www.cam-inc.co.jp/)
 - [Camptocamp](https://www.camptocamp.com/en)
 - [codecentric AG](https://www.codecentric.de/)
 - [Commencis](https://www.commencis.com/)
 - [Cupix](https://www.cupix.com/)
 - [DB Systel](https://www.dbsystel.de)
+- [Edge Impulse](https://www.edgeimpulse.com/)
 - [Element AI](https://www.elementai.com/)
+- [Fenergo](https://www.fenergo.com/)
 - [FormAPI](https://formapi.io/)
 - [Fuse](https://www.fuse.no/)
 - [Gantner](https://www.gantner.com)
 - [GenFlow](https://github.com/RepreZen/GenFlow)
 - [GMO Pepabo](https://pepabo.com/en/)
 - [GoDaddy](https://godaddy.com)
+- [Here](https://developer.here.com/)
+- [IBM](https://www.ibm.com/)
 - [JustStar](https://www.juststarinfo.com)
 - [Klarna](https://www.klarna.com/)
 - [Médiavision](https://www.mediavision.fr/)
 - [Metaswitch](https://www.metaswitch.com/)
 - [Myworkout](https://myworkout.com)
+- [NamSor](https://www.namsor.com/)
+- [Openet](https://www.openet.com/)
 - [Paxos](https://www.paxos.com)
+- [Ponicode](https://ponicode.dev/)
 - [Pricefx](https://www.pricefx.com/)
 - [Prometheus/Alertmanager](https://github.com/prometheus/alertmanager)
 - [Raiffeisen Schweiz Genossenschaft](https://www.raiffeisen.ch)
+- [RedHat](https://www.redhat.com)
 - [RepreZen API Studio](https://www.reprezen.com/swagger-openapi-code-generation-api-first-microservices-enterprise-development)
 - [REST United](https://restunited.com)
 - [Stingray](http://www.stingray.com)
 - [Suva](https://www.suva.ch/)
 - [Telstra](https://dev.telstra.com)
+- [TravelTime platform](https://www.traveltimeplatform.com/)
 - [TUI InfoTec GmbH](http://www.tui-infotec.com/)
 - [unblu inc.](https://www.unblu.com/)
 - [Veamly](https://www.veamly.com/)
 - [WSO2](https://wso2.com/)
+- [Vouchery.io](https://vouchery.io)
 - [Xero](https://www.xero.com/)
 - [Yelp](https://www.yelp.com/)
 - [Zalando](https://www.zalando.com)
@@ -641,7 +667,12 @@ Here are some companies/projects (alphabetical order) using OpenAPI Generator in
 - 2019-09-22 - [RESTful APIs: Tutorial of OpenAPI Specification](https://medium.com/@amirm.lavasani/restful-apis-tutorial-of-openapi-specification-eeada0e3901d) by [Amir Lavasani](https://medium.com/@amirm.lavasani)
 - 2019-09-22 - [Redefining SDKs as software diversity kits](https://devrel.net/dev-rel/redefining-sdks-as-software-diversity-kits) by [Sid Maestre (Xero)](https://twitter.com/sidneyallen) at [DevRelCon San Francisco 2019](https://sf2019.devrel.net/)
 - 2019-09-23 - [swaggerからOpenApi GeneratorでSpringのコードを自動生成](https://qiita.com/littleFeet/items/492df2ad68a0799a5e5e) by [@littleFeet](https://qiita.com/littleFeet) at [Qiita](https://qiita.com/)
-
+- 2019-09-24 - [Eine Stunde was mit Api First!](https://www.slideshare.net/JanWeinschenker/eine-stunde-was-mit-api-first) by [@janweinschenker](https://twitter.com/janweinschenker) at [Java Forum Nord](https://javaforumnord.de/)
+- 2019-10-09 - [openapi-generator で生成した Go クライアントで Bearer 認証をする](https://autopp-tech.hatenablog.com/entry/2019/10/09/222039) by [Akira Tanimura](https://github.com/autopp)
+- 2019-10-10 - [Automatic Generation of REST Clients](https://www.meetup.com/fr-FR/Criteo-Labs-Tech-Talks/events/264775768/) by Thomas Peyrard, Senior Software Engineer at Criteo in [Full-Stack Tech Talks (Meetup)](https://www.meetup.com/fr-FR/Criteo-Labs-Tech-Talks/events/264775768/)
+- 2019-10-12 - [OpenApi自动生成client](https://blog.csdn.net/wxid2798226/article/details/102527467) by [郑泽洲](https://me.csdn.net/wxid2798226)
+- 2019-10-16 - [How to ship APIs faster?](https://medium.com/@accounts_76224/how-to-ship-apis-faster-cabef2f819e4) by [Simon Guilliams @ PoniCode](https://ponicode.dev)
+- 2019-10-22 - [OpenAPI + Spring Boot(Kotlin)でファイルダウンロードAPIを作成する](https://qiita.com/boronngo/items/4b78b92526209daeaee9) by [Yuki Furukawa](https://twitter.com/yuki_furukawa5)
 
 ## [6 - About Us](#table-of-contents)
 
@@ -678,6 +709,7 @@ Here is a list of template creators:
    * Dart (refactor): @joernahrens
    * Dart 2: @swipesight
    * Dart (Jaguar): @jaumard
+   * Dart (Dio): @athornz
    * Elixir: @niku
    * Elm: @eriktim
    * Eiffel: @jvelilla
