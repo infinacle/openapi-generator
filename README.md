@@ -60,7 +60,7 @@ OpenAPI Generator allows generation of API client libraries (SDK generation), se
 |                                | Languages/Frameworks |
 |-|-|
 **API clients**                  | **ActionScript**, **Ada**, **Apex**, **Bash**, **C**, **C#** (.net 2.0, 3.5 or later, .NET Standard 1.3 - 2.0, .NET Core 2.0), **C++** (cpp-restsdk, Qt5, Tizen), **Clojure**, **Dart (1.x, 2.x)**, **Elixir**, **Elm**, **Eiffel**, **Erlang**, **Go**, **Groovy**, **Haskell** (http-client, Servant), **Java** (Jersey1.x, Jersey2.x, OkHttp, Retrofit1.x, Retrofit2.x, Feign, RestTemplate, RESTEasy, Vertx, Google API Client Library for Java, Rest-assured, Spring 5 Web Client), **Kotlin**, **Lua**, **Nim**, **Node.js/JavaScript** (ES5, ES6, AngularJS with Google Closure Compiler annotations, Flow types), **Objective-C**, **OCaml**, **Perl**, **PHP**, **PowerShell**, **Python**, **R**, **Ruby**, **Rust** (rust, rust-server), **Scala** (akka, http4s, scalaz, swagger-async-httpclient), **Swift** (2.x, 3.x, 4.x), **Typescript** (AngularJS, Angular (2.x - 8.x), Aurelia, Axios, Fetch, Inversify, jQuery, Node, Rxjs)
-**Server stubs**                 | **Ada**, **C#** (ASP.NET Core, NancyFx), **C++** (Pistache, Restbed, Qt5 QHTTPEngine), **Erlang**, **F#** (Giraffe), **Go** (net/http, Gin), **Haskell** (Servant), **Java** (MSF4J, Spring, Undertow, JAX-RS: CDI, CXF, Inflector, Jersey, RestEasy, Play Framework, [PKMST](https://github.com/ProKarma-Inc/pkmst-getting-started-examples)), **Kotlin** (Spring Boot, Ktor, Vertx), **PHP** (Laravel, Lumen, Slim, Silex, [Symfony](https://symfony.com/), [Zend Expressive](https://github.com/zendframework/zend-expressive)), **Python** (Flask), **NodeJS**, **Ruby** (Sinatra, Rails5), **Rust** (rust-server), **Scala** ([Finch](https://github.com/finagle/finch), [Lagom](https://github.com/lagom/lagom), [Play](https://www.playframework.com/), Scalatra)
+**Server stubs**                 | **Ada**, **C#** (ASP.NET Core, NancyFx), **C++** (Pistache, Restbed, Qt5 QHTTPEngine), **Erlang**, **F#** (Giraffe), **Go** (net/http, Gin), **Haskell** (Servant), **Java** (MSF4J, Spring, Undertow, JAX-RS: CDI, CXF, Inflector, Jersey, RestEasy, Play Framework, [PKMST](https://github.com/ProKarma-Inc/pkmst-getting-started-examples), [Vert.x](https://vertx.io/)), **Kotlin** (Spring Boot, Ktor, Vertx), **PHP** (Laravel, Lumen, Slim, Silex, [Symfony](https://symfony.com/), [Zend Expressive](https://github.com/zendframework/zend-expressive)), **Python** (Flask), **NodeJS**, **Ruby** (Sinatra, Rails5), **Rust** (rust-server), **Scala** ([Finch](https://github.com/finagle/finch), [Lagom](https://github.com/lagom/lagom), [Play](https://www.playframework.com/), Scalatra)
 **API documentation generators** | **HTML**, **Confluence Wiki**, **Asciidoc**
 **Configuration files**          | [**Apache2**](https://httpd.apache.org/)
 **Others**                       | **GraphQL**, **JMeter**, **MySQL Schema**, **Protocol Buffer**
@@ -558,6 +558,7 @@ Here are some companies/projects (alphabetical order) using OpenAPI Generator in
 - [Angular.Schule](https://angular.schule/)
 - [Australia and New Zealand Banking Group (ANZ)](http://www.anz.com/)
 - [ASKUL](https://www.askul.co.jp)
+- [Arduino](https://www.arduino.cc/)
 - [b<>com](https://b-com.com/en)
 - [Banzai Cloud](https://banzaicloud.com)
 - [BIMData.io](https://bimdata.io)
@@ -675,6 +676,7 @@ Here are some companies/projects (alphabetical order) using OpenAPI Generator in
 - 2019-10-12 - [OpenApi自动生成client](https://blog.csdn.net/wxid2798226/article/details/102527467) by [郑泽洲](https://me.csdn.net/wxid2798226)
 - 2019-10-16 - [How to ship APIs faster?](https://medium.com/@accounts_76224/how-to-ship-apis-faster-cabef2f819e4) by [Simon Guilliams @ PoniCode](https://ponicode.dev)
 - 2019-10-22 - [OpenAPI + Spring Boot(Kotlin)でファイルダウンロードAPIを作成する](https://qiita.com/boronngo/items/4b78b92526209daeaee9) by [Yuki Furukawa](https://twitter.com/yuki_furukawa5)
+- 2019-10-24 - [Microprofile OpenAPI - Code First or Design First?](https://github.com/pe-st/apidocs/blob/master/MicroProfile-OpenAPI-all-slides.pdf) by [Peter [pɛʃə] Steiner](https://twitter.com/pesche) at [eclipsecon Europe 2019](https://www.eclipsecon.org/europe2019/sessions/microprofile-openapi-code-first-or-design-first)
 
 ## [6 - About Us](#table-of-contents)
 
@@ -783,6 +785,7 @@ Here is a list of template creators:
    * Java Undertow: @stevehu
    * Java Play Framework: @JFCote
    * Java PKMST: @anshu2185 @sanshuman @rkumar-pk @ninodpillai
+   * Java Vert.x: @lwlee2608
    * JAX-RS RestEasy: @chameleon82
    * JAX-RS CXF: @hiveship
    * JAX-RS CXF (CDI): @nickcmaynard
@@ -866,8 +869,8 @@ If you want to join the committee, please kindly apply by sending an email to te
 | GraphQL   | @renepardon (2018/12) |
 | Groovy    |  |
 | Haskell   |  |
-| Java      | @bbdouglas (2017/07) @sreeshas (2017/08) @jfiala (2017/08) @lukoyanov (2017/09) @cbornet (2017/09) @jeff9finger (2018/01) @karismann (2019/03) @Zomzog (2019/04) |
-| Kotlin    | @jimschubert (2017/09) [:heart:](https://www.patreon.com/jimschubert), @dr4ke616 (2018/08) @karismann (2019/03) @Zomzog (2019/04) |
+| Java      | @bbdouglas (2017/07) @sreeshas (2017/08) @jfiala (2017/08) @lukoyanov (2017/09) @cbornet (2017/09) @jeff9finger (2018/01) @karismann (2019/03) @Zomzog (2019/04) @lwlee2608 (2019/10) |
+| Kotlin    | @jimschubert (2017/09) [:heart:](https://www.patreon.com/jimschubert), @dr4ke616 (2018/08) @karismann (2019/03) @Zomzog (2019/04) @andrewemery (2019/10) |
 | Lua       | @daurnimator (2017/08) |
 | Nim       |  |
 | NodeJS/Javascript | @CodeNinjai (2017/07) @frol (2017/07) @cliffano (2017/07) |
