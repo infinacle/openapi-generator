@@ -89,6 +89,12 @@ type {{operationId}}Api struct {
 	{{#bodyParam}}
 	// Body params
 	body *{{dataType}}{{/bodyParam}}
+
+	{{#headerParams}}
+	// {{paramName}} {{baseName}}
+	{{paramName}} {{#isNullable}}*{{/isNullable}}{{dataType}} {{#description}}// {{{description}}} {{/description}}
+	{{/headerParams}}
+
 	{{#pathParams}}
 	// Path params 
 	{{paramName}} {{#isNullable}}*{{/isNullable}}{{dataType}} {{#description}}// {{{description}}} {{/description}}
@@ -141,6 +147,11 @@ func {{operationId}}Handler (c *gin.Context) {
 	}
 	{{/isApiKey}}{{/authMethods}}
 
+	{{#headerParams}}
+	// header {{baseName}}
+	api.{{paramName}} = c.GetHeader("{{baseName}}")
+	{{/headerParams}}
+
 	{{#pathParams}}
 	// path params
 	{{#isString}}{{>partial_param_string}}{{/isString}}
@@ -167,7 +178,7 @@ func {{operationId}}Handler (c *gin.Context) {
 	{
 		api.body = &{{dataType}}{}
 		if err := c.ShouldBind(api.body); err != nil {
-			c.JSON(http.StatusBadRequest, status.New(400, err.Error())
+			c.JSON(http.StatusBadRequest, status.New(400, err.Error()))
 			return
 		}
 	}
