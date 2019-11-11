@@ -7,6 +7,7 @@ import (
 	"strings"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"gitlab.infinacle.com/infini/go-rest/v2"
 	"gitlab.infinacle.com/infini/go-rest/v2/status"
 )
 
@@ -86,6 +87,8 @@ func bearerAuthHandler (c *gin.Context) (*Principal, error) {
 {{#apiInfo}}{{#apis}}{{#operations}}{{#operation}}
 // {{operationId}}Api API handler for {{operationId}}
 type {{operationId}}Api struct {
+	rest.API
+
 	{{#bodyParam}}
 	// Body params
 	body *{{dataType}}{{/bodyParam}}
@@ -101,7 +104,7 @@ type {{operationId}}Api struct {
 	{{/pathParams}}
 	{{#queryParams}}
 	// Query params
-	{{paramName}} {{#isNullable}}*{{/isNullable}}{{dataType}} {{#description}}// {{{description}}} {{/description}}
+	{{paramName}} {{#isNullable}}*{{/isNullable}}{{^isNullable}}{{^required}}*{{/required}}{{/isNullable}}{{dataType}} {{#description}}// {{{description}}} {{/description}}
 	{{/queryParams}}
 
 	// Form params
@@ -126,6 +129,7 @@ type {{operationId}}Api struct {
 func {{operationId}}Handler (c *gin.Context) {
 	// API context
 	api := &{{operationId}}Api{}
+	api.Context = c
 
 	{{#authMethods}}{{#isBasicBearer}}
 	// BasicBearer
@@ -158,13 +162,15 @@ func {{operationId}}Handler (c *gin.Context) {
 	{{/pathParams}}
 
 	{{#queryParams}}
-	// query params
+	// query param: {{baseName}}
 	{{#isString}}{{>partial_param_string}}{{/isString}}
+	{{#isNumber}}{{>partial_param_number}}{{/isNumber}}
+	{{#isInteger}}{{>partial_param_integer}}{{/isInteger}}
+	{{#isLong}}{{>partial_param_long}}{{/isLong}}
+	
 	{{#required}}
-
 	{{/required}}
 	{{^required}}
-
 	{{/required}}
 	{{/queryParams}}
 

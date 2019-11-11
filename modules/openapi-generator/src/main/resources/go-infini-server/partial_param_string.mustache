@@ -1,5 +1,16 @@
     {{#isQueryParam}}
-    api.{{paramName}} = c.Query("{{baseName}}")
+    {{#isNullable}}
+    api.{{paramName}} = api.GetQueryStringNullable("{{baseName}}")
+    {{/isNullable}}
+    {{^isNullable}}
+        {{^required}}
+            api.{{paramName}} = api.GetQueryStringNullable("{{baseName}}")
+        {{/required}}
+        {{#required}}
+            api.{{paramName}} = c.Query("{{baseName}}")
+        {{/required}}
+    {{/isNullable}}
+    
     {{/isQueryParam}}
     {{^isQueryParam}}
     {{#isFormParam}}
@@ -18,27 +29,18 @@
     {{#required}}
     // {{paramName}} is require
     if api.{{paramName}} == "" {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"code": 400,
-			"message": "{{paramName}} is required",
-		})
+		c.JSON(http.StatusBadRequest, status.New(400, "{{paramName}} is required"))
         return
     }
     {{#minLength}}
     if len(api.{{paramName}}) < {{minLength}} {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"code": 400,
-			"message": "{{paramName}} should have minimum length of {{minLength}}",
-		})
+		c.JSON(http.StatusBadRequest, status.New(400, "{{paramName}} should have minimum length of {{minLength}}"))
         return
     }
     {{/minLength}}
     {{#maxLength}}
     if len(api.{{paramName}}) > {{maxLength}} {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"code": 400,
-			"message": "{{paramName}} should have maximum length of {{maxLength}}",
-		})
+		c.JSON(http.StatusBadRequest, status.New(400, "{{paramName}} should have maximum length of {{maxLength}}"))
         return
     }
     {{/maxLength}}
@@ -47,20 +49,14 @@
     {{#minLength}}
     // {{paramName}} is not required, minLength {{minLength}}
     if api.{{paramName}} != "" && len(api.{{paramName}}) < {{minLength}} {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"code": 400,
-			"message": "{{paramName}} should have minimum length of {{minLength}}",
-		})
+		c.JSON(http.StatusBadRequest, status.New(400, "{{paramName}} should have minimum length of {{minLength}}"))
         return
     }
     {{/minLength}}
     {{#maxLength}}
     // {{paramName}} is not required, maxLength {{maxLength}}
     if api.{{paramName}} != "" && len(api.{{paramName}}) > {{maxLength}} {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"code": 400,
-			"message": "{{paramName}} should have maximum length of {{maxLength}}",
-		})
+		c.JSON(http.StatusBadRequest, status.New(400, "{{paramName}} should have maximum length of {{maxLength}}"))
         return
     }
     {{/maxLength}}
