@@ -1,22 +1,29 @@
-{{#isQueryParam}}    {
-    var err error
+{{#isQueryParam}}
     {{#isNullable}}
-    api.{{paramName}}, err = api.GetQueryInt64Nullable("{{baseName}}")
+    if api.{{paramName}}, api.Error = api.GetQueryInt64Nullable("{{baseName}}",{{#defaultValue}}
+        validate.DefaultInt64({{defaultValue}}),{{/defaultValue}}
+    ); api.Error != nil {
+        c.JSON(http.StatusBadRequest, api.Error)
+        return
+    }
     {{/isNullable}}
     {{^isNullable}}
         {{#required}}
-            api.{{paramName}}, err = api.GetQueryInt64("{{baseName}}")
+            if api.{{paramName}}, api.Error = api.GetQueryInt64("{{baseName}}"); api.Error != nil {
+                c.JSON(http.StatusBadRequest, api.Error)
+                return
+            }
         {{/required}}
         {{^required}}
-            api.{{paramName}}, err = api.GetQueryInt64Nullable("{{baseName}}")
+            if api.{{paramName}}, api.Error = api.GetQueryInt64Nullable("{{baseName}}",{{#defaultValue}}
+                validate.DefaultInt64({{defaultValue}}),{{/defaultValue}}
+            ); api.Error != nil {
+                c.JSON(http.StatusBadRequest, api.Error)
+                return
+            }
         {{/required}}
     {{/isNullable}}
-
-    if err != nil {
-        c.JSON(http.StatusBadRequest, err)
-        return
-    }
-    }{{/isQueryParam}}
+    {{/isQueryParam}}
     {{^isQueryParam}}
     {{#isFormParam}}
     api.{{paramName}} = c.PostForm("{{baseName}}")
