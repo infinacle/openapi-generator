@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gitlab.infinacle.com/infini/go-rest/v2"
 	"gitlab.infinacle.com/infini/go-rest/v2/status"
+	"gitlab.infinacle.com/infini/go-rest/v2/validate"
 )
 
 // draw the routes
@@ -44,33 +45,6 @@ func NewRouter() *gin.Engine {
 }
 
 {{#authMethods}}
-{{#isBasicBearer}}
-// {{name}} authentication
-// func {{name}} (c *gin.Context) (*Principal, error) {
-//	bearer := c.GetHeader("Authorization")
-//
-//	encrypted, err := auth.NewEncryptedBearer(bearer)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	return encrypted.ValidateRemote()
-//}
-
-func bearerAuthHandler (c *gin.Context) (*Principal, error) {
-	// BasicBearer
-	principal, err := {{name}}(c)
-	if err != nil {
-		// Not authorized
-		c.JSON(http.StatusUnauthorized, status.New(401, err.Error()))
-		return nil, err
-	}
-	
-	return principal, err
-}
-
-{{/isBasicBearer}}
-
 {{#isApiKey}}
 // func {{name}} (c *gin.Context) (*Principal, error) {
 //	apiKey, err := auth.NewApiKey(c.GetHeader("X-API-KEY"))
@@ -87,7 +61,7 @@ func bearerAuthHandler (c *gin.Context) (*Principal, error) {
 {{#apiInfo}}{{#apis}}{{#operations}}{{#operation}}
 // {{operationId}}Api API handler for {{operationId}}
 type {{operationId}}Api struct {
-	rest.API
+	rest.API `json:"-"`
 
 	{{#bodyParam}}
 	// Body params
@@ -103,7 +77,7 @@ type {{operationId}}Api struct {
 	{{paramName}} {{#isNullable}}*{{/isNullable}}{{dataType}} {{#description}}// {{{description}}} {{/description}}
 	{{/pathParams}}
 	{{#queryParams}}
-	// Query params
+	// {{paramName}} query param: {{baseName}}
 	{{paramName}} {{#isNullable}}*{{/isNullable}}{{^isNullable}}{{^required}}*{{/required}}{{/isNullable}}{{dataType}} {{#description}}// {{{description}}} {{/description}}
 	{{/queryParams}}
 
@@ -133,12 +107,10 @@ func {{operationId}}Handler (c *gin.Context) {
 
 	{{#authMethods}}{{#isBasicBearer}}
 	// BasicBearer
-	{
-		var err error
-		api.Principal, err = bearerAuthHandler(c)
-		if err != nil {
-			return
-		}
+	if api.Principal, api.Error = {{name}}(c); api.Error != nil {
+		// Not authorized
+		c.JSON(http.StatusUnauthorized, status.New(401, api.Error.Error()))
+		return
 	}
 	{{/isBasicBearer}}{{#isApiKey}}
 	{
@@ -167,11 +139,6 @@ func {{operationId}}Handler (c *gin.Context) {
 	{{#isNumber}}{{>partial_param_number}}{{/isNumber}}
 	{{#isInteger}}{{>partial_param_integer}}{{/isInteger}}
 	{{#isLong}}{{>partial_param_long}}{{/isLong}}
-	
-	{{#required}}
-	{{/required}}
-	{{^required}}
-	{{/required}}
 	{{/queryParams}}
 
 	{{#formParams}}

@@ -1,16 +1,38 @@
     {{#isQueryParam}}
-    {{#isNullable}}
-    api.{{paramName}} = api.GetQueryStringNullable("{{baseName}}")
+    {{#isNullable}} 
+    if api.{{paramName}}, api.Error = api.GetQueryStringNullable("{{baseName}}",{{#defaultValue}}
+        validate.DefaultString("{{defaultValue}}"),{{/defaultValue}}{{#required}}
+        validate.RequiredString("{{paramName}} is required"),{{/required}}{{#minLength}}
+        validate.MinLength({{minLength}}, "{{paramName}} should have minimum length of {{minLength}}"),{{/minLength}}{{#maxLength}}
+        validate.MaxLength({{maxLength}}, "{{paramName}} should have maximum length of {{maxLength}}"),{{/maxLength}}); api.Error != nil {
+        c.JSON(http.StatusBadRequest, api.Error)
+        return
+    }
+
     {{/isNullable}}
     {{^isNullable}}
         {{^required}}
-            api.{{paramName}} = api.GetQueryStringNullable("{{baseName}}")
+            if api.{{paramName}}, api.Error = api.GetQueryStringNullable("{{baseName}}",{{#defaultValue}}
+                validate.DefaultString("{{defaultValue}}"),{{/defaultValue}}{{#required}}
+                validate.RequiredString("{{paramName}} is required"),{{/required}}{{#minLength}}
+                validate.MinLength({{minLength}}, "{{paramName}} should have minimum length of {{minLength}}"),{{/minLength}}{{#maxLength}}
+                validate.MaxLength({{maxLength}}, "{{paramName}} should have maximum length of {{maxLength}}"),{{/maxLength}}); api.Error != nil {
+                c.JSON(http.StatusBadRequest, api.Error)
+                return
+            }
+    
         {{/required}}
         {{#required}}
-            api.{{paramName}} = c.Query("{{baseName}}")
+            if api.{{paramName}}, api.Error = api.GetQueryString("{{baseName}}",{{#defaultValue}}
+                validate.DefaultString("{{defaultValue}}"),{{/defaultValue}}{{#required}}
+                validate.RequiredString("{{paramName}} is required"),{{/required}}{{#minLength}}
+                validate.MinLength({{minLength}}, "{{paramName}} should have minimum length of {{minLength}}"),{{/minLength}}{{#maxLength}}
+                validate.MaxLength({{maxLength}}, "{{paramName}} should have maximum length of {{maxLength}}"),{{/maxLength}}); api.Error != nil {
+                c.JSON(http.StatusBadRequest, api.Error)
+                return
+            }
         {{/required}}
     {{/isNullable}}
-    
     {{/isQueryParam}}
     {{^isQueryParam}}
     {{#isFormParam}}
@@ -20,45 +42,4 @@
     api.{{paramName}} = c.Param("{{baseName}}")
     {{/isFormParam}}
     {{/isQueryParam}}
-    {{#defaultValue}}
-    if api.{{paramName}} == "" {
-        // use provided default value
-        api.{{paramName}} = "{{defaultValue}}"
-    }
-    {{/defaultValue}}
-    {{#required}}
-    // {{paramName}} is require
-    if api.{{paramName}} == "" {
-		c.JSON(http.StatusBadRequest, status.New(400, "{{paramName}} is required"))
-        return
-    }
-    {{#minLength}}
-    if len(api.{{paramName}}) < {{minLength}} {
-		c.JSON(http.StatusBadRequest, status.New(400, "{{paramName}} should have minimum length of {{minLength}}"))
-        return
-    }
-    {{/minLength}}
-    {{#maxLength}}
-    if len(api.{{paramName}}) > {{maxLength}} {
-		c.JSON(http.StatusBadRequest, status.New(400, "{{paramName}} should have maximum length of {{maxLength}}"))
-        return
-    }
-    {{/maxLength}}
-    {{/required}}
-    {{^required}}
-    {{#minLength}}
-    // {{paramName}} is not required, minLength {{minLength}}
-    if api.{{paramName}} != "" && len(api.{{paramName}}) < {{minLength}} {
-		c.JSON(http.StatusBadRequest, status.New(400, "{{paramName}} should have minimum length of {{minLength}}"))
-        return
-    }
-    {{/minLength}}
-    {{#maxLength}}
-    // {{paramName}} is not required, maxLength {{maxLength}}
-    if api.{{paramName}} != "" && len(api.{{paramName}}) > {{maxLength}} {
-		c.JSON(http.StatusBadRequest, status.New(400, "{{paramName}} should have maximum length of {{maxLength}}"))
-        return
-    }
-    {{/maxLength}}
-    {{/required}}
 
