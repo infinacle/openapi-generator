@@ -1,6 +1,7 @@
 org.openapitools.codegen.languages.AdaCodegen
 org.openapitools.codegen.languages.AdaServerCodegen
 org.openapitools.codegen.languages.AndroidClientCodegen
+org.openapitools.codegen.languages.AndroidInfiniClientCodegen
 org.openapitools.codegen.languages.Apache2ConfigCodegen
 org.openapitools.codegen.languages.ApexClientCodegen
 org.openapitools.codegen.languages.AspNetCoreServerCodegen
@@ -45,6 +46,7 @@ org.openapitools.codegen.languages.KotlinVertxServerCodegen
 org.openapitools.codegen.languages.HaskellHttpClientCodegen
 org.openapitools.codegen.languages.HaskellServantCodegen
 org.openapitools.codegen.languages.JavaClientCodegen
+org.openapitools.codegen.languages.JavaInfiniClientCodegen
 org.openapitools.codegen.languages.JavaCXFClientCodegen
 org.openapitools.codegen.languages.JavaInflectorServerCodegen
 org.openapitools.codegen.languages.JavaMSF4JServerCodegen
